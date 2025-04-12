@@ -1,6 +1,6 @@
 [gd_scene load_steps=11 format=3 uid="uid://btpfvuap4wfwc"]
 
-[ext_resource type="PackedScene" uid="uid://1mk4dquwg3vl" path="res://player.tscn" id="1_m8ggk"]
+[ext_resource type="PackedScene" uid="uid://1mk4dquwg3vl" path="res://Entities/player.tscn" id="1_m8ggk"]
 
 [sub_resource type="WorldBoundaryShape3D" id="WorldBoundaryShape3D_ctf6d"]
 
@@ -54,3 +54,5 @@ shape = SubResource("BoxShape3D_pdq4i")
 [node name="MeshInstance3D" type="MeshInstance3D" parent="StaticBody3D2"]
 transform = Transform3D(10, 0, 0, 0, 10, 0, 0, 0, 2, 0, 0, 0)
 mesh = SubResource("BoxMesh_kmnpu")
+
+[node name="GridMap" type="GridMap" parent="."]
