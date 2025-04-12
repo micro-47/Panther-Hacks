@@ -11,8 +11,6 @@ var multiplayer_handler: MultiplayerHandler = get_node(\"/root\").get_children()
 
 func _ready() -> void:	
 	$Ip.text = \"ip: \" + multiplayer_handler.ip_address
-	
-	Input.mouse_mode = Input.MOUSE_MODE_VISIBLE
 
 func _on_host_pressed() -> void:
 	multiplayer_handler.host()
