@@ -1,4 +1,4 @@
-[gd_scene load_steps=4 format=3 uid="uid://1mk4dquwg3vl"]
+[gd_scene load_steps=5 format=3 uid="uid://1mk4dquwg3vl"]
 
 [sub_resource type="GDScript" id="GDScript_egy34"]
 resource_name = "basic_movement"
@@ -36,6 +36,8 @@ func _physics_process(delta: float) -> void:
 
 [sub_resource type="CapsuleMesh" id="CapsuleMesh_sop6y"]
 
+[sub_resource type="SphereMesh" id="SphereMesh_5fhlu"]
+
 [node name="Player" type="Node3D"]
 
 [node name="CharacterBody3D" type="CharacterBody3D" parent="."]
@@ -47,4 +49,15 @@ shape = SubResource("CapsuleShape3D_dsm1o")
 [node name="MeshInstance3D" type="MeshInstance3D" parent="CharacterBody3D"]
 mesh = SubResource("CapsuleMesh_sop6y")
 
-[node name="Camera3D" type="Camera3D" parent="CharacterBody3D"]
+[node name="ass" type="MeshInstance3D" parent="CharacterBody3D/MeshInstance3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.148852, 0.033692)
+mesh = SubResource("SphereMesh_5fhlu")
+skeleton = NodePath("../..")
+
+[node name="Camera" type="Node3D" parent="CharacterBody3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.63765, 0)
+
+[node name="SpringArm3D" type="SpringArm3D" parent="CharacterBody3D/Camera"]
+spring_length = 5.0
+
+[node name="Camera3D" type="Camera3D" parent="CharacterBody3D/Camera/SpringArm3D"]
