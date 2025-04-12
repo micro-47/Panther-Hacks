@@ -31,8 +31,8 @@ func host() -> void:
 
 func add_player(id):
 	print("Added: ", id)
-	var player = preload("res://player.tscn")
-	
+	var player_scene = preload("res://Entities/player.tscn")
+	var player = player_scene.instantiate()
 	# yeah, put this somewhere else
 	add_child(player)
 
