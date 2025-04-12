@@ -7,11 +7,16 @@ script/source = "extends CharacterBody3D
 
 const SPEED = 5.0
 const JUMP_VELOCITY = 4.5
-
-@onready var pivot: Camera3D = $Camera/SpringArm3D/Camera3D
+@onready var pivot = $Camera/SpringArm3D
+@export var sens = 0.5
 
 func _ready() -> void:
 	Input.mouse_mode = Input.MOUSE_MODE_CAPTURED
+	
+func _input(event):
+	if event is InputEventMouseMotion:
+		rotate_y(deg_to_rad(-event.relative.x*sens))
+		pivot.rotate_x(deg_to_rad(-event.relative.y*sens))
 
 func _physics_process(delta: float) -> void:
 	# Add the gravity.
@@ -44,24 +49,29 @@ func _physics_process(delta: float) -> void:
 
 [node name="Player" type="Node3D"]
 
-[node name="CharacterBody3D" type="CharacterBody3D" parent="."]
+[node name="player" type="CharacterBody3D" parent="."]
 script = SubResource("GDScript_egy34")
 
-[node name="CollisionShape3D" type="CollisionShape3D" parent="CharacterBody3D"]
+[node name="body_collision" type="CollisionShape3D" parent="player"]
 shape = SubResource("CapsuleShape3D_dsm1o")
 
-[node name="MeshInstance3D" type="MeshInstance3D" parent="CharacterBody3D"]
+[node name="body_mesh" type="MeshInstance3D" parent="player"]
 mesh = SubResource("CapsuleMesh_sop6y")
 
-[node name="ass" type="MeshInstance3D" parent="CharacterBody3D/MeshInstance3D"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.148852, 0.033692)
+[node name="left_cheek" type="MeshInstance3D" parent="player/body_mesh"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.1, -0.3, 0.1)
 mesh = SubResource("SphereMesh_5fhlu")
-skeleton = NodePath("../..")
+skeleton = NodePath("")
 
-[node name="Camera" type="Node3D" parent="CharacterBody3D"]
+[node name="right_cheek" type="MeshInstance3D" parent="player/body_mesh"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.1, -0.3, 0.1)
+mesh = SubResource("SphereMesh_5fhlu")
+skeleton = NodePath("")
+
+[node name="Camera" type="Node3D" parent="player"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.63765, 0)
 
-[node name="SpringArm3D" type="SpringArm3D" parent="CharacterBody3D/Camera"]
+[node name="SpringArm3D" type="SpringArm3D" parent="player/Camera"]
 spring_length = 5.0
 
-[node name="Camera3D" type="Camera3D" parent="CharacterBody3D/Camera/SpringArm3D"]
+[node name="Camera3D" type="Camera3D" parent="player/Camera/SpringArm3D"]
