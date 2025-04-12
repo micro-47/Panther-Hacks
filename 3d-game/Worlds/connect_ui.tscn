@@ -28,8 +28,8 @@ func _on_host_pressed() -> void:
 	peer.create_server(PORT, MAX_CLIENTS)
 	multiplayer.multiplayer_peer = peer
 	
-	multiplayer.peer_connected.connect(func ():
-		print(\"hi\")
+	multiplayer.peer_connected.connect(func (id):
+		print(\"hi: \", id)
 	)
 
 
