@@ -1,43 +1,24 @@
-[gd_scene load_steps=2 format=3 uid="uid://ceokmsoeacmb4"]
+[gd_scene load_steps=2 format=3 uid="uid://c27kutmtsb27v"]
 
 [sub_resource type="GDScript" id="GDScript_uefv8"]
 script/source = "# Multiplayer join UI based on: https://medium.com/@bitr13x/how-to-make-a-simple-2d-multiplayer-game-in-godot-6247b68d0af0 and https://www.youtube.com/watch?v=h5_eyycttgA
+# Test locally with: https://www.reddit.com/r/godot/comments/9ahw6i/is_there_a_way_to_launch_two_instances_of_your/
 
 extends Node
 
-const PORT = 4315
-const MAX_CLIENTS = 10
-var ip_address = \"\"
+@onready
+var multiplayer_handler: MultiplayerHandler = get_node(\"/root\").get_children()[0]
 
-func _ready() -> void:
-	if OS.get_name() == \"Android\":
-		ip_address = IP.get_local_addresses()[0]
-	else:
-		ip_address = IP.get_local_addresses()[3]
+func _ready() -> void:	
+	$Ip.text = \"ip: \" + multiplayer_handler.ip_address
 	
-	for ip in IP.get_local_addresses():
-		if ip.begins_with(\"192.168.\"): # and not ip.ends_with(\".1\"):
-			ip_address = ip
-	
-	$Ip.text = \"ip: \" + ip_address
-
+	Input.mouse_mode = Input.MOUSE_MODE_VISIBLE
 
 func _on_host_pressed() -> void:
-	# https://docs.godotengine.org/en/stable/tutorials/networking/high_level_multiplayer.html
-	var peer = ENetMultiplayerPeer.new()
-	peer.create_server(PORT, MAX_CLIENTS)
-	multiplayer.multiplayer_peer = peer
-	
-	multiplayer.peer_connected.connect(func (id):
-		print(\"hi: \", id)
-	)
-
+	multiplayer_handler.host()
 
 func _on_join_pressed() -> void:
-	var peer = ENetMultiplayerPeer.new()
-	var join_ip_address = $JoinIp.text
-	peer.create_client(join_ip_address, PORT)
-	multiplayer.multiplayer_peer = peer
+	multiplayer_handler.join($JoinIp.text)
 "
 
 [node name="ConnectUi" type="Control"]
@@ -69,8 +50,9 @@ text = "Host"
 layout_mode = 0
 offset_left = 931.0
 offset_top = 153.0
-offset_right = 998.062
+offset_right = 1076.0
 offset_bottom = 184.0
+text = "127.0.0.1"
 
 [node name="Join" type="Button" parent="."]
 layout_mode = 0

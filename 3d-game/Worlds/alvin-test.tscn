@@ -1,75 +1,64 @@
-[gd_scene load_steps=7 format=3 uid="uid://djcbehf8gaxmr"]
+[gd_scene load_steps=13 format=3 uid="uid://djcbehf8gaxmr"]
 
-[ext_resource type="PackedScene" uid="uid://ceokmsoeacmb4" path="res://Worlds/connect_ui.tscn" id="1_eak81"]
+[ext_resource type="PackedScene" uid="uid://c27kutmtsb27v" path="res://Worlds/connect_ui.tscn" id="1_eak81"]
+[ext_resource type="PackedScene" uid="uid://1mk4dquwg3vl" path="res://player.tscn" id="1_ga2k3"]
+[ext_resource type="Script" path="res://Worlds/multiplayer.gd" id="1_ofmxj"]
 
-[sub_resource type="GDScript" id="GDScript_hlpp1"]
-resource_name = "basic_movement"
-script/source = "extends CharacterBody3D
+[sub_resource type="WorldBoundaryShape3D" id="WorldBoundaryShape3D_kcw1v"]
 
+[sub_resource type="PlaneMesh" id="PlaneMesh_sq4a1"]
 
-const SPEED = 5.0
-const JUMP_VELOCITY = 4.5
+[sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_vd4se"]
 
+[sub_resource type="Sky" id="Sky_lmhu1"]
+sky_material = SubResource("ProceduralSkyMaterial_vd4se")
 
-func _physics_process(delta: float) -> void:
-	# Add the gravity.
-	if not is_on_floor():
-		velocity += get_gravity() * delta
+[sub_resource type="Environment" id="Environment_1kxf8"]
+background_mode = 2
+sky = SubResource("Sky_lmhu1")
+ambient_light_color = Color(1, 1, 1, 1)
 
-	# Handle jump.
-	if Input.is_action_just_pressed(\"ui_accept\") and is_on_floor():
-		velocity.y = JUMP_VELOCITY
+[sub_resource type="CameraAttributesPractical" id="CameraAttributesPractical_7pl0r"]
 
-	# Get the input direction and handle the movement/deceleration.
-	# As good practice, you should replace UI actions with custom gameplay actions.
-	var input_dir := Input.get_vector(\"ui_left\", \"ui_right\", \"ui_up\", \"ui_down\")
-	var direction := (transform.basis * Vector3(input_dir.x, 0, input_dir.y)).normalized()
-	if direction:
-		velocity.x = direction.x * SPEED
-		velocity.z = direction.z * SPEED
-	else:
-		velocity.x = move_toward(velocity.x, 0, SPEED)
-		velocity.z = move_toward(velocity.z, 0, SPEED)
+[sub_resource type="Compositor" id="Compositor_qvgyx"]
 
-	move_and_slide()
-"
+[sub_resource type="BoxShape3D" id="BoxShape3D_04x2o"]
+size = Vector3(1, 1, 0.2)
 
-[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_dudd8"]
-
-[sub_resource type="CapsuleMesh" id="CapsuleMesh_5i43r"]
-
-[sub_resource type="WorldBoundaryShape3D" id="WorldBoundaryShape3D_td1vd"]
-
-[sub_resource type="PlaneMesh" id="PlaneMesh_d2jlk"]
+[sub_resource type="BoxMesh" id="BoxMesh_epf63"]
 
 [node name="Alvin-test" type="Node3D"]
-
-[node name="CharacterBody3D" type="CharacterBody3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 5, 0)
-script = SubResource("GDScript_hlpp1")
-
-[node name="CollisionShape3D" type="CollisionShape3D" parent="CharacterBody3D"]
-shape = SubResource("CapsuleShape3D_dudd8")
-
-[node name="MeshInstance3D" type="MeshInstance3D" parent="CharacterBody3D"]
-mesh = SubResource("CapsuleMesh_5i43r")
-
-[node name="Camera3D" type="Camera3D" parent="CharacterBody3D"]
-transform = Transform3D(-4.37114e-08, 0, -1, 0, 1, 0, 1, 0, -4.37114e-08, -17.406, 2, 0)
+script = ExtResource("1_ofmxj")
 
 [node name="StaticBody3D" type="StaticBody3D" parent="."]
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="StaticBody3D"]
-shape = SubResource("WorldBoundaryShape3D_td1vd")
+shape = SubResource("WorldBoundaryShape3D_kcw1v")
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="StaticBody3D"]
 transform = Transform3D(10, 0, 0, 0, 10, 0, 0, 0, 10, 0, 0, 0)
-mesh = SubResource("PlaneMesh_d2jlk")
+mesh = SubResource("PlaneMesh_sq4a1")
 
-[node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, -4.37114e-08, 1, 0, -1, -4.37114e-08, 0, 10.9819, 0)
+[node name="WorldEnvironment" type="WorldEnvironment" parent="."]
+environment = SubResource("Environment_1kxf8")
+camera_attributes = SubResource("CameraAttributesPractical_7pl0r")
+compositor = SubResource("Compositor_qvgyx")
+
+[node name="Player" parent="." instance=ExtResource("1_ga2k3")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 5, 0)
+
+[node name="StaticBody3D2" type="StaticBody3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 5, 8)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="StaticBody3D2"]
+transform = Transform3D(10, 0, 0, 0, 10, 0, 0, 0, 10, 0, 0, 0)
+shape = SubResource("BoxShape3D_04x2o")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="StaticBody3D2"]
+transform = Transform3D(10, 0, 0, 0, 10, 0, 0, 0, 2, 0, 0, 0)
+mesh = SubResource("BoxMesh_epf63")
 
 [node name="MultiplayerSpawner" type="MultiplayerSpawner" parent="."]
-spawn_path = NodePath("../CharacterBody3D")
+spawn_path = NodePath("../Player")
 
 [node name="ConnectUi" parent="." instance=ExtResource("1_eak81")]
