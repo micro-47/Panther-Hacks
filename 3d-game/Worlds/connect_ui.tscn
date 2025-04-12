@@ -1,0 +1,70 @@
+[gd_scene load_steps=2 format=3 uid="uid://c27kutmtsb27v"]
+
+[sub_resource type="GDScript" id="GDScript_uefv8"]
+script/source = "# Multiplayer join UI based on: https://medium.com/@bitr13x/how-to-make-a-simple-2d-multiplayer-game-in-godot-6247b68d0af0 and https://www.youtube.com/watch?v=h5_eyycttgA
+
+extends Node
+
+const PORT = 4315
+var peer = ENetMultiplayerPeer.new()
+
+var ip_address
+
+func _ready() -> void:
+	for ip in IP.get_local_addresses():
+		if ip.begins_with(\"192.168.\"):
+			print(\"ip: \", ip)
+			ip_address = ip
+	
+	$Ip.text = ip_address
+
+
+func _on_host_pressed() -> void:
+	pass # Replace with function body.
+
+
+func _on_join_pressed() -> void:
+	pass # Replace with function body.
+"
+
+[node name="ConnectUi" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = SubResource("GDScript_uefv8")
+
+[node name="Ip" type="Label" parent="."]
+layout_mode = 0
+offset_left = 160.0
+offset_top = 35.0
+offset_right = 200.0
+offset_bottom = 58.0
+text = "Hi"
+
+[node name="Host" type="Button" parent="."]
+layout_mode = 0
+offset_left = 193.0
+offset_top = 194.0
+offset_right = 588.0
+offset_bottom = 266.0
+text = "Host"
+
+[node name="LineEdit" type="LineEdit" parent="."]
+layout_mode = 0
+offset_left = 931.0
+offset_top = 153.0
+offset_right = 998.062
+offset_bottom = 184.0
+
+[node name="Join" type="Button" parent="."]
+offset_left = 386.0
+offset_top = 388.0
+offset_right = 781.0
+offset_bottom = 460.0
+text = "Join"
+
+[connection signal="pressed" from="Host" to="." method="_on_host_pressed"]
+[connection signal="pressed" from="Join" to="." method="_on_join_pressed"]
