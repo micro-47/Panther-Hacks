@@ -96,7 +96,11 @@ func _process(delta: float) -> void:
 		# only let the client that corresponds to this player control it
 		%Health.text = \"\"
 		return
-	%Health.text = \"Health: \" + str(self.health) + \"/\" + str(MAX_HEALTH)
+	
+	if health <= 0:
+		%Health.text = \"Dead\"
+	else:
+		%Health.text = \"Health: \" + str(self.health) + \"/\" + str(MAX_HEALTH)
 	
 func hit():
 	self.health -= damage
