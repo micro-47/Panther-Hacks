@@ -44,6 +44,7 @@ _spawnable_scenes = PackedStringArray("res://Entities/player.tscn")
 spawn_path = NodePath("..")
 
 [node name="ConnectUi" parent="." instance=ExtResource("4_wikei")]
+metadata/_edit_use_anchors_ = true
 
 [node name="GridMaps" type="Node3D" parent="."]
 

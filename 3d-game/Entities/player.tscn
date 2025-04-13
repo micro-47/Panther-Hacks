@@ -1,4 +1,6 @@
-[gd_scene load_steps=6 format=3 uid="uid://1mk4dquwg3vl"]
+[gd_scene load_steps=7 format=3 uid="uid://1mk4dquwg3vl"]
+
+[ext_resource type="PackedScene" uid="uid://crh0qq2efpv3i" path="res://Entities/gun.tscn" id="1_2b835"]
 
 [sub_resource type="GDScript" id="GDScript_egy34"]
 resource_name = "basic_movement"
@@ -8,8 +10,13 @@ script/source = "extends CharacterBody3D
 const SPEED = 5.0
 const JUMP_VELOCITY = 15
 @onready var pivot: SpringArm3D = $camera
+@onready var gun_animation_player = $camera/actual_camera/Gun/AnimationPlayer
+@onready var gun_barrel = $camera/actual_camera/Gun/RayCast3D
 @export var sens = 0.5
+@export var damage = 1
 
+var bullet = load(\"res://Entities/bullet.tscn\")
+var instance
 
 const MAX_HEALTH = 5
 var health = MAX_HEALTH
@@ -28,7 +35,6 @@ func _ready() -> void:
 		print(Input.mouse_mode)
 		Input.mouse_mode = Input.MOUSE_MODE_CAPTURED
 	
-	$camera/actual_camera/ShootRay.add_exception(self)
 
 
 func _input(event):
@@ -42,22 +48,16 @@ func _input(event):
 		pivot.rotation.x = clamp(pivot.rotation.x,deg_to_rad(-90),deg_to_rad(90))
 	if Input.is_key_pressed(KEY_ESCAPE):
 		Input.mouse_mode = Input.MOUSE_MODE_VISIBLE
-	if event is InputEventMouseButton and event.is_pressed():
-		#var ray_source: Vector3 = $camera/actual_camera.global_position
-		#var ray_direction: Vector3 = $camera/actual_camera.global_basis.z # https://www.reddit.com/r/godot/comments/hg2uaj/how_to_get_vector3_of_direction_your_camera_is/
-		#var ray_cast = RayCast3D.new()
-		#add_child(ray_cast)
-		#ray_cast.global_position = ray_source+ray_direction.clampf(0.5,0.5)
-		#ray_cast.target_position = ray_direction
-		#ray_cast.force_raycast_update()
-		#print(ray_direction)
-		#print(ray_cast.get_collider())
-		##print(ray_cast.get_collider().global_position)
-		#ray_cast.queue_free()
-		%ShootRay.force_raycast_update()
-		print(%ShootRay.get_collider())
 
 func _physics_process(delta: float) -> void:
+	if Input.is_action_pressed(\"shoot\"):
+		if !gun_animation_player.is_playing():
+			gun_animation_player.play(\"shoot\")
+			instance = bullet.instantiate()
+			instance.position = gun_barrel.global_position
+			instance.transform.basis = gun_barrel.global_transform.basis
+			get_parent().get_parent().add_child(instance)
+	
 	if !$\"..\".is_multiplayer_authority():
 		# only let the client that corresponds to this player control it
 		return
@@ -90,6 +90,11 @@ func _physics_process(delta: float) -> void:
 
 func _process(delta: float) -> void:
 	%Health.text = \"Health: \" + str(self.health) + \"/\" + str(MAX_HEALTH)
+	
+func hit():
+	self.health -= damage
+	if self.health <= 0:
+		print(\"dead\")
 "
 
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_dsm1o"]
@@ -108,7 +113,7 @@ properties/1/replication_mode = 1
 
 [node name="Player" type="Node3D"]
 
-[node name="player" type="CharacterBody3D" parent="."]
+[node name="player" type="CharacterBody3D" parent="." groups=["player"]]
 script = SubResource("GDScript_egy34")
 
 [node name="body_collision" type="CollisionShape3D" parent="player"]
@@ -135,15 +140,14 @@ spring_length = 0.0
 
 [node name="actual_camera" type="Camera3D" parent="player/camera"]
 
-[node name="ShootRay" type="RayCast3D" parent="player/camera/actual_camera"]
-unique_name_in_owner = true
-transform = Transform3D(1, 0, 0, 0, -4.37114e-08, -1, 0, 1, -4.37114e-08, 0, 0, 0)
-hit_from_inside = true
+[node name="Gun" parent="player/camera/actual_camera" instance=ExtResource("1_2b835")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.784493, -0.36934, -0.687308)
 
 [node name="AudioStreamPlayer3D" type="AudioStreamPlayer3D" parent="player"]
 
 [node name="SpotLight3D" type="SpotLight3D" parent="player"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.577, 0)
+visible = false
 light_energy = 34.461
 light_indirect_energy = 11.135
 light_volumetric_fog_energy = 8.225
