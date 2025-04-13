@@ -33,7 +33,7 @@ func _input(event):
 	if event is InputEventMouseMotion:
 		rotate_y(deg_to_rad(-event.relative.x*sens))
 		pivot.rotate_x(deg_to_rad(-event.relative.y*sens))
-		pivot.rotation.x = clamp(pivot.rotation.x,deg_to_rad(-60),deg_to_rad(30))
+		pivot.rotation.x = clamp(pivot.rotation.x,deg_to_rad(-90),deg_to_rad(90))
 	if Input.is_key_pressed(KEY_ESCAPE):
 		Input.mouse_mode = Input.MOUSE_MODE_VISIBLE
 	
@@ -115,6 +115,14 @@ spring_length = 5.0
 [node name="actual_camera" type="Camera3D" parent="player/camera"]
 
 [node name="AudioStreamPlayer3D" type="AudioStreamPlayer3D" parent="player"]
+
+[node name="SpotLight3D" type="SpotLight3D" parent="player"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.577, 0)
+light_energy = 34.461
+light_indirect_energy = 11.135
+light_volumetric_fog_energy = 8.225
+light_size = 1.0
+spot_range = 30.69
 
 [node name="MultiplayerSynchronizer" type="MultiplayerSynchronizer" parent="."]
 replication_config = SubResource("SceneReplicationConfig_pdqxr")
