@@ -15,6 +15,9 @@ func _enter_tree() -> void:
 	$\"..\".set_multiplayer_authority(int(str($\"..\".name)))
 	print(\"authority: \", int(str($\"..\".name)))
 
+	if ($\"..\".is_multiplayer_authority()):
+		$camera/actual_camera.make_current()
+
 
 func _ready() -> void:
 	if get_window().has_focus():
@@ -73,6 +76,9 @@ func _physics_process(delta: float) -> void:
 properties/0/path = NodePath("player:position")
 properties/0/spawn = true
 properties/0/replication_mode = 1
+properties/1/path = NodePath("player:rotation")
+properties/1/spawn = true
+properties/1/replication_mode = 1
 
 [node name="Player" type="Node3D"]
 
@@ -102,6 +108,8 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.63765, 0)
 spring_length = 5.0
 
 [node name="actual_camera" type="Camera3D" parent="player/camera"]
+
+[node name="AudioStreamPlayer3D" type="AudioStreamPlayer3D" parent="player"]
 
 [node name="MultiplayerSynchronizer" type="MultiplayerSynchronizer" parent="."]
 replication_config = SubResource("SceneReplicationConfig_pdqxr")
