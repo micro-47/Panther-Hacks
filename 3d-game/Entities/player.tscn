@@ -62,6 +62,11 @@ func _physics_process(delta: float) -> void:
 	else:
 		velocity.x = move_toward(velocity.x, 0, SPEED)
 		velocity.z = move_toward(velocity.z, 0, SPEED)
+	
+	var sprinting := Input.is_key_pressed(KEY_CTRL)
+	if sprinting:
+		velocity.x *= 2.
+		velocity.z *= 2.
 
 	move_and_slide()
 "
