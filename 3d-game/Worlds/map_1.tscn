@@ -1,9 +1,9 @@
-[gd_scene load_steps=11 format=3 uid="uid://bkg7u7kkw1dj1"]
+[gd_scene load_steps=10 format=3 uid="uid://cpbpwlaneq7tk"]
 
 [ext_resource type="Script" path="res://Worlds/multiplayer.gd" id="1_4p5qs"]
 [ext_resource type="MeshLibrary" uid="uid://c76ibiqhvfuxr" path="res://Assets/basic_gridmap.tres" id="1_ggna5"]
 [ext_resource type="PhysicsMaterial" uid="uid://dtmuuj5fedko7" path="res://Assets/normal.tres" id="2_qlbl6"]
-[ext_resource type="PackedScene" uid="uid://c27kutmtsb27v" path="res://Worlds/connect_ui.tscn" id="4_wikei"]
+[ext_resource type="PackedScene" uid="uid://ceokmsoeacmb4" path="res://Worlds/connect_ui.tscn" id="4_wikei"]
 
 [sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_ndqil"]
 
@@ -19,12 +19,23 @@ ambient_light_color = Color(1, 1, 1, 1)
 
 [sub_resource type="Compositor" id="Compositor_6inpy"]
 
-[sub_resource type="BoxMesh" id="BoxMesh_r8up3"]
-
 [node name="Map1" type="Node3D"]
 script = ExtResource("1_4p5qs")
 
-[node name="GridMap" type="GridMap" parent="."]
+[node name="WorldEnvironment" type="WorldEnvironment" parent="."]
+environment = SubResource("Environment_xfkbd")
+camera_attributes = SubResource("CameraAttributesPractical_3mf6e")
+compositor = SubResource("Compositor_6inpy")
+
+[node name="MultiplayerSpawner" type="MultiplayerSpawner" parent="."]
+_spawnable_scenes = PackedStringArray("res://Entities/player.tscn")
+spawn_path = NodePath("..")
+
+[node name="ConnectUi" parent="." instance=ExtResource("4_wikei")]
+
+[node name="GridMaps" type="Node3D" parent="."]
+
+[node name="non_rotated" type="GridMap" parent="GridMaps"]
 mesh_library = ExtResource("1_ggna5")
 physics_material = ExtResource("2_qlbl6")
 cell_size = Vector3(4, 4, 4)
@@ -37,29 +48,4 @@ data = {
 }
 metadata/_editor_floor_ = Vector3(0, 0, 0)
 
-[node name="WorldEnvironment" type="WorldEnvironment" parent="."]
-environment = SubResource("Environment_xfkbd")
-camera_attributes = SubResource("CameraAttributesPractical_3mf6e")
-compositor = SubResource("Compositor_6inpy")
-
-[node name="MeshInstance3D5" type="MeshInstance3D" parent="."]
-transform = Transform3D(5, 0, 0, 0, 5, 0, 0, 0, 5, -6.57634, 10.1915, 0)
-mesh = SubResource("BoxMesh_r8up3")
-
-[node name="CSGCylinder3D" type="CSGCylinder3D" parent="MeshInstance3D5"]
-transform = Transform3D(-4.37114e-08, -1, 0, 1, -4.37114e-08, 0, 0, 0, 1, 0, -0.1, 0)
-operation = 2
-radius = 0.4
-height = 1.0
-sides = 20
-
-[node name="CSGBox3D" type="CSGBox3D" parent="MeshInstance3D5"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.25, 0)
-operation = 2
-size = Vector3(1, 0.5, 0.8)
-
-[node name="MultiplayerSpawner" type="MultiplayerSpawner" parent="."]
-_spawnable_scenes = PackedStringArray("res://Entities/player.tscn")
-spawn_path = NodePath("..")
-
-[node name="ConnectUi" parent="." instance=ExtResource("4_wikei")]
+[node name="rotated" type="GridMap" parent="GridMaps"]
