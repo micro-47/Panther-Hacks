@@ -13,7 +13,6 @@ sky_material = SubResource("ProceduralSkyMaterial_ndqil")
 [sub_resource type="Environment" id="Environment_xfkbd"]
 background_mode = 2
 sky = SubResource("Sky_lmhu1")
-ambient_light_color = Color(1, 1, 1, 1)
 
 [sub_resource type="CameraAttributesPractical" id="CameraAttributesPractical_3mf6e"]
 
