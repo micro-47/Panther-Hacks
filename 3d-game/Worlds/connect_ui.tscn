@@ -9,7 +9,8 @@ extends Node
 @onready
 var multiplayer_handler: MultiplayerHandler = get_node(\"/root\").get_children()[0]
 
-func _ready() -> void:	
+func _ready() -> void:
+	#Timer.new(1)
 	$Ip.text = \"ip: \" + multiplayer_handler.ip_address
 
 func _on_host_pressed() -> void:

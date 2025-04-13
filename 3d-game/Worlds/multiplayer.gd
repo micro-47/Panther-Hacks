@@ -14,8 +14,11 @@ func _ready() -> void:
 	else:
 		ip_address = IP.get_local_addresses()[3]
 	
+	print(IP.get_local_addresses())
+	
 	for ip in IP.get_local_addresses():
-		if ip.begins_with("192.168.") and not ip.ends_with(".1"):
+		#if ip.begins_with("192.168.") and not ip.ends_with(".1"):
+		if ip.begins_with("172"):
 			ip_address = ip
 
 
@@ -37,7 +40,7 @@ func add_player(id):
 	var player = player_scene.instantiate()
 	player.name = str(id)
 	# yeah, put this somewhere else
-	$Players.add_child(player)
+	add_child(player)
 
 func remove_player(id):
 	print("Removed: ", id)
