@@ -45,6 +45,10 @@ ui_down={
 ]
 }
 
+[physics]
+
+3d/default_gravity=39.2
+
 [rendering]
 
 renderer/rendering_method="gl_compatibility"
