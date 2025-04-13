@@ -38,9 +38,9 @@ func add_player(id):
 	var player_scene = preload("res://Entities/player.tscn")
 	var player = player_scene.instantiate()
 	player.name = str(id)
-	player.global_position = Vector3(-50,5,-40)
 	# yeah, put this somewhere else
 	add_child(player)
+	player.global_position = Vector3(-50,5,-40)
 
 func remove_player(id):
 	print("Removed: ", id)

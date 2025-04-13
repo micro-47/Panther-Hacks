@@ -27,6 +27,8 @@ func _ready() -> void:
 	if get_window().has_focus():
 		print(Input.mouse_mode)
 		Input.mouse_mode = Input.MOUSE_MODE_CAPTURED
+	
+	$camera/actual_camera/ShootRay.add_exception(self)
 
 
 func _input(event):
@@ -41,8 +43,19 @@ func _input(event):
 	if Input.is_key_pressed(KEY_ESCAPE):
 		Input.mouse_mode = Input.MOUSE_MODE_VISIBLE
 	if event is InputEventMouseButton and event.is_pressed():
-		self.health -= 1
-
+		#var ray_source: Vector3 = $camera/actual_camera.global_position
+		#var ray_direction: Vector3 = $camera/actual_camera.global_basis.z # https://www.reddit.com/r/godot/comments/hg2uaj/how_to_get_vector3_of_direction_your_camera_is/
+		#var ray_cast = RayCast3D.new()
+		#add_child(ray_cast)
+		#ray_cast.global_position = ray_source+ray_direction.clampf(0.5,0.5)
+		#ray_cast.target_position = ray_direction
+		#ray_cast.force_raycast_update()
+		#print(ray_direction)
+		#print(ray_cast.get_collider())
+		##print(ray_cast.get_collider().global_position)
+		#ray_cast.queue_free()
+		%ShootRay.force_raycast_update()
+		print(%ShootRay.get_collider())
 
 func _physics_process(delta: float) -> void:
 	if !$\"..\".is_multiplayer_authority():
@@ -121,6 +134,11 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.63765, 0)
 spring_length = 0.0
 
 [node name="actual_camera" type="Camera3D" parent="player/camera"]
+
+[node name="ShootRay" type="RayCast3D" parent="player/camera/actual_camera"]
+unique_name_in_owner = true
+transform = Transform3D(1, 0, 0, 0, -4.37114e-08, -1, 0, 1, -4.37114e-08, 0, 0, 0)
+hit_from_inside = true
 
 [node name="AudioStreamPlayer3D" type="AudioStreamPlayer3D" parent="player"]
 
