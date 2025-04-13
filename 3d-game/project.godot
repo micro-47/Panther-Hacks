@@ -11,7 +11,7 @@ config_version=5
 [application]
 
 config/name="3D game"
-run/main_scene="res://Worlds/jerry-test.tscn"
+run/main_scene="res://Worlds/map_1.tscn"
 config/features=PackedStringArray("4.3", "GL Compatibility")
 
 [input]
