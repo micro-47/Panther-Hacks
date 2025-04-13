@@ -40,7 +40,7 @@ camera_attributes = SubResource("CameraAttributesPractical_3mf6e")
 compositor = SubResource("Compositor_6inpy")
 
 [node name="MultiplayerSpawner" type="MultiplayerSpawner" parent="."]
-_spawnable_scenes = PackedStringArray("res://Entities/player.tscn")
+_spawnable_scenes = PackedStringArray("res://Entities/player.tscn", "res://Entities/bullet.tscn")
 spawn_path = NodePath("..")
 
 [node name="ConnectUi" parent="." instance=ExtResource("4_wikei")]
