@@ -35,7 +35,7 @@ func add_player(id):
 	print("Added: ", id)
 	var player_scene = preload("res://Entities/player.tscn")
 	var player = player_scene.instantiate()
-	player.name = "Player" + str(id)
+	player.name = str(id)
 	# yeah, put this somewhere else
 	$Players.add_child(player)
 
