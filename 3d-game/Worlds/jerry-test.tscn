@@ -1,7 +1,7 @@
-[gd_scene load_steps=11 format=3 uid="uid://btpfvuap4wfwc"]
+[gd_scene load_steps=9 format=3 uid="uid://btpfvuap4wfwc"]
 
 [ext_resource type="PackedScene" uid="uid://1mk4dquwg3vl" path="res://Entities/player.tscn" id="1_m8ggk"]
-[ext_resource type="MeshLibrary" uid="uid://c76ibiqhvfuxr" path="res://test.tres" id="2_ba3f2"]
+[ext_resource type="MeshLibrary" uid="uid://c76ibiqhvfuxr" path="res://Assets/basic_gridmap.tres" id="2_ba3f2"]
 [ext_resource type="PhysicsMaterial" uid="uid://dtmuuj5fedko7" path="res://Assets/normal.tres" id="3_vxnru"]
 
 [sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_yi8s4"]
@@ -18,11 +18,6 @@ ambient_light_color = Color(1, 1, 1, 1)
 
 [sub_resource type="Compositor" id="Compositor_c1rdt"]
 
-[sub_resource type="BoxShape3D" id="BoxShape3D_pdq4i"]
-size = Vector3(1, 1, 0.2)
-
-[sub_resource type="BoxMesh" id="BoxMesh_kmnpu"]
-
 [node name="Jerry-test" type="Node3D"]
 
 [node name="WorldEnvironment" type="WorldEnvironment" parent="."]
@@ -33,22 +28,14 @@ compositor = SubResource("Compositor_c1rdt")
 [node name="Player" parent="." instance=ExtResource("1_m8ggk")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 5, 0)
 
-[node name="StaticBody3D2" type="StaticBody3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 5, 8)
-
-[node name="CollisionShape3D" type="CollisionShape3D" parent="StaticBody3D2"]
-transform = Transform3D(10, 0, 0, 0, 10, 0, 0, 0, 10, 0, 0, 0)
-shape = SubResource("BoxShape3D_pdq4i")
-
-[node name="MeshInstance3D" type="MeshInstance3D" parent="StaticBody3D2"]
-transform = Transform3D(10, 0, 0, 0, 10, 0, 0, 0, 2, 0, 0, 0)
-mesh = SubResource("BoxMesh_kmnpu")
-
 [node name="GridMap" type="GridMap" parent="."]
 mesh_library = ExtResource("2_ba3f2")
 physics_material = ExtResource("3_vxnru")
-cell_size = Vector3(10, 10, 10)
+cell_size = Vector3(4, 4, 4)
+cell_center_x = false
 cell_center_y = false
+cell_center_z = false
+cell_scale = 4.0
 data = {
 "cells": PackedInt32Array(65532, 3, 0, 65533, 3, 0, 65534, 3, 0, 65535, 3, 0, 65535, 2, 0, 65535, 1, 0, 65535, 0, 0, 65534, 0, 0, 65534, 1, 0, 65534, 2, 0, 65533, 2, 0, 65533, 1, 0, 65533, 0, 0, 65533, 65535, 0, 0, 3, 0, 0, 2, 0, 0, 1, 0, 1, 1, 0, 1, 2, 0, 1, 3, 0, 1, 4, 0, 2, 0, 0, 2, 65535, 0, 2, 65534, 0, 2, 65533, 0, 1, 65535, 0, 1, 0, 0, 1, 65534, 0, 1, 65533, 0, 0, 65534, 0, 65535, 65534, 0, 65535, 65535, 0, 65534, 65534, 0, 65534, 65535, 0, 65534, 65533, 0, 65535, 65532, 0, 0, 65532, 0, 0, 65533, 0, 65535, 65533, 0, 0, 0, 0, 0, 65535, 0, 2, 1, 0, 2, 2, 2, 2, 3, 0, 3, 3, 0, 3, 2, 0, 4, 2, 1, 4, 1, 1, 4, 0, 1, 3, 65535, 0, 3, 65534, 1, 3, 65533, 1, 4, 65534, 1, 4, 65535, 1, 3, 1, 0, 3, 0, 0, 3, 65532, 1, 2, 65532, 1, 2, 65531, 1, 1, 65531, 1, 1, 65530, 1, 0, 65530, 1, 65534, 65531, 2, 2, 4, 2, 0, 4, 655362, 6, 2, 655362)
 }
