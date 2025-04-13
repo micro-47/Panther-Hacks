@@ -17,9 +17,11 @@ func _ready() -> void:
 
 func _on_host_pressed() -> void:
 	multiplayer_handler.host()
+	self.queue_free()
 
 func _on_join_pressed() -> void:
 	multiplayer_handler.join($JoinIp.text)
+	self.queue_free()
 "
 
 [node name="ConnectUi" type="Control"]
