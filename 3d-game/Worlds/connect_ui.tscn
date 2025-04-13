@@ -10,8 +10,10 @@ extends Node
 var multiplayer_handler: MultiplayerHandler = get_node(\"/root\").get_children()[0]
 
 func _ready() -> void:
-	#Timer.new(1)
-	$Ip.text = \"ip: \" + multiplayer_handler.ip_address
+	# use call_deferred?
+	get_tree().create_timer(0.1).timeout.connect(func():
+		$Ip.text = \"ip: \" + multiplayer_handler.ip_address
+	)
 
 func _on_host_pressed() -> void:
 	multiplayer_handler.host()

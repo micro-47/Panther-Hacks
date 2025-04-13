@@ -17,8 +17,7 @@ func _ready() -> void:
 	print(IP.get_local_addresses())
 	
 	for ip in IP.get_local_addresses():
-		#if ip.begins_with("192.168.") and not ip.ends_with(".1"):
-		if ip.begins_with("172"):
+		if (ip.begins_with("192.168.") and not ip.ends_with(".1")) or ip.begins_with("172.") or ip.begins_with("10."):
 			ip_address = ip
 
 
